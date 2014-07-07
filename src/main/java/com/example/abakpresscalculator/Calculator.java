@@ -4,48 +4,59 @@ import java.util.Stack;
 
 public class Calculator {
 
-    private Stack<Integer> operandStack = new Stack<Integer>();
-    private Stack<Character> operatorStack = new Stack<Character>();
-
     public static final String BAD_INPUT = "Некорректные входные данные";
 
     public String calculate(String string){
         try {
+            Stack<Integer> operandStack = new Stack<Integer>();
+            Stack<Character> operatorStack = new Stack<Character>();
             boolean unaryIsPossible = true;
             for (int i = 0; i < string.length(); i++)
-                if (!Character.isWhitespace(string.charAt(i)))
-                    if (string.charAt(i) == '(') {
+                switch (string.charAt(i)){
+                    case ' ':
+                        break;
+                    case '(':
                         operatorStack.push('(');
                         unaryIsPossible = true;
-                    } else if (string.charAt(i) == ')') {
-                        while (operatorStack.peek() != '(')
-                            calculateOperation(operatorStack.pop());
+                        break;
+                    case ')':
+                        while (operatorStack.peek() != '(') {
+                            calculateOperation(operandStack, operatorStack.pop());
+                        }
                         operatorStack.pop();
                         unaryIsPossible = false;
-                    } else if (isOperator(string.charAt(i))) {
+                        break;
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
                         char currentOperator = string.charAt(i);
                         if (unaryIsPossible && currentOperator == '-') currentOperator = '#';
-                        while (!operatorStack.empty() && getPriority(operatorStack.peek()) >= getPriority(currentOperator))
-                            calculateOperation(operatorStack.pop());
+                        while (!operatorStack.empty() && getPriority(operatorStack.peek()) >= getPriority(currentOperator)){
+                            calculateOperation(operandStack, operatorStack.pop());
+                        }
                         operatorStack.push(currentOperator);
                         unaryIsPossible = true;
-                    } else {
+                        break;
+                    default:
                         String operand = "";
                         while (i < string.length() && Character.isDigit(string.charAt(i)))
                             operand += string.charAt(i++);
                         --i;
                         operandStack.push(Integer.parseInt(operand));
                         unaryIsPossible = false;
-                    }
-            while (!operatorStack.empty())
-                calculateOperation(operatorStack.pop());
+                        break;
+                }
+            while (!operatorStack.empty()){
+                calculateOperation(operandStack, operatorStack.pop());
+            }
             return String.valueOf(operandStack.peek());
         } catch (Exception exception){
             return BAD_INPUT;
         }
     }
 
-    void calculateOperation(char op) {
+    void calculateOperation(Stack<Integer> operandStack, char op) {
         if (op == '#') {
             int a = operandStack.pop();
             operandStack.push(-a);
@@ -68,10 +79,6 @@ public class Calculator {
                     break;
             }
         }
-    }
-
-    private boolean isOperator(char c){
-        return c=='+' || c=='-' || c=='*' || c=='/';
     }
 
     private int getPriority(char op){
