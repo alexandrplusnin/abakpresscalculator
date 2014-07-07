@@ -7,87 +7,117 @@ import junit.framework.Assert;
 public class CalculatorTest extends AndroidTestCase{
 
     public void testSimpleString1(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("2*2"), "4");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("2*2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 4);
     }
 
     public void testSimpleString2(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("2*2+2"), "6");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("2*2+2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 6);
     }
 
     public void testSimpleString3(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("2+2*2"), "6");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("2+2*2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 6);
     }
 
     public void testSimpleString4(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("(2+2)*2"), "8");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("(2+2)*2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 8);
     }
 
     public void testSimpleUnaryString1(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("-2"), "-2");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("-2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), -2);
     }
 
     public void testSimpleUnaryString2(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("-2-2"), "-4");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("-2-2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), -4);
     }
 
     public void testSimpleUnaryString3(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("2--2"), "4");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("2--2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 4);
     }
 
     public void testSimpleUnaryString4(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("-(2-2)"), "0");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("-(2-2)");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 0);
     }
 
     public void testSimpleWhiteSpaceString(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("2 / 2 + 2"), "3");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("2 / 2 + 2");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 3);
     }
 
     public void testNotSoSimpleString1(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("52+(1+2)*4-3"), "61");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("52+(1+2)*4-3");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 61);
     }
 
     public void testNotSoSimpleString2(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("52+((1+2)*4)-3"), "61");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("52+((1+2)*4)-3");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 61);
     }
 
     public void testNotSoSimpleString3(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("(52+1+2)*4-3"), "217");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("(52+1+2)*4-3");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), 217);
     }
 
     public void testNotSoSimpleString4(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("1+2*5-5/22+(45+34)*-3"), "-226");
+        ICalculator calculator = new Calculator();
+        calculator.setInput("1+2*5-5/22+(45+34)*-3");
+        Assert.assertTrue(calculator.isInputCorrect());
+        Assert.assertEquals(calculator.getResult(), -226);
     }
 
     public void testBadString1(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("5+"), Calculator.BAD_INPUT);
+        ICalculator calculator = new Calculator();
+        calculator.setInput("-");
+        Assert.assertFalse(calculator.isInputCorrect());
     }
 
     public void testBadString2(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("6/0"), Calculator.BAD_INPUT);
+        ICalculator calculator = new Calculator();
+        calculator.setInput("6/0");
+        Assert.assertFalse(calculator.isInputCorrect());
     }
 
     public void testBadString3(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("a--"), Calculator.BAD_INPUT);
+        ICalculator calculator = new Calculator();
+        calculator.setInput("a--");
+        Assert.assertFalse(calculator.isInputCorrect());
     }
 
     public void testBadString4(){
-        Calculator calculator = new Calculator();
-        Assert.assertEquals(calculator.calculate("2+0.2"), Calculator.BAD_INPUT);
+        ICalculator calculator = new Calculator();
+        calculator.setInput("2+0.2");
+        Assert.assertFalse(calculator.isInputCorrect());
     }
 }

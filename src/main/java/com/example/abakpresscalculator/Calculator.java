@@ -2,16 +2,41 @@ package com.example.abakpresscalculator;
 
 import java.util.Stack;
 
-public class Calculator {
+public class Calculator implements ICalculator{
 
     public static final String BAD_INPUT = "Некорректные входные данные";
 
-    public String calculate(String string){
+    private String input = "";
+    private int result = -1;
+    private boolean inputCorrect = false;
+    private boolean calculated = false;
+
+    public void setInput(String input) {
+        this.input = input;
+    }
+
+    public boolean isInputCorrect() {
+        if(!calculated) {
+            calculate();
+            calculated = true;
+        }
+        return inputCorrect;
+    }
+
+    public int getResult() {
+        if(!calculated) {
+            calculate();
+            calculated = true;
+        }
+        return result;
+    }
+
+    private void calculate(){
         Stack<Integer> operandStack = new Stack<Integer>();
         Stack<Character> operatorStack = new Stack<Character>();
         boolean unaryIsPossible = true;
-        for (int i = 0; i < string.length(); i++)
-            switch (string.charAt(i)){
+        for (int i = 0; i < input.length(); i++)
+            switch (input.charAt(i)){
                 case ' ':
                     break;
                 case '(':
@@ -21,12 +46,12 @@ public class Calculator {
                 case ')':
                     while (operatorStack.peek() != '(') {
                         if(operatorStack.empty())
-                            return BAD_INPUT;
+                            return;
                         if(calculateOperation(operandStack, operatorStack.pop())!=0)
-                            return BAD_INPUT;
+                            return;
                     }
                     if(operatorStack.empty())
-                        return BAD_INPUT;
+                        return;
                     operatorStack.pop();
                     unaryIsPossible = false;
                     break;
@@ -34,20 +59,20 @@ public class Calculator {
                 case '-':
                 case '*':
                 case '/':
-                    char currentOperator = string.charAt(i);
+                    char currentOperator = input.charAt(i);
                     if (unaryIsPossible && currentOperator == '-') currentOperator = '#';
                     while (!operatorStack.empty() && getPriority(operatorStack.peek()) >= getPriority(currentOperator))
                         if(calculateOperation(operandStack, operatorStack.pop())!=0)
-                            return BAD_INPUT;
+                            return;
                     operatorStack.push(currentOperator);
                     unaryIsPossible = true;
                     break;
                 default:
-                    if(!Character.isDigit(string.charAt(i)))
-                        return BAD_INPUT;
+                    if(!Character.isDigit(input.charAt(i)))
+                        return;
                     String operand = "";
-                    while (i < string.length() && Character.isDigit(string.charAt(i)))
-                        operand += string.charAt(i++);
+                    while (i < input.length() && Character.isDigit(input.charAt(i)))
+                        operand += input.charAt(i++);
                     --i;
                     operandStack.push(Integer.parseInt(operand));
                     unaryIsPossible = false;
@@ -55,8 +80,9 @@ public class Calculator {
             }
         while (!operatorStack.empty())
             if(calculateOperation(operandStack, operatorStack.pop())!=0)
-                return BAD_INPUT;
-        return String.valueOf(operandStack.peek());
+                return;
+        inputCorrect = true;
+        result = operandStack.peek();
     }
 
     int calculateOperation(Stack<Integer> operandStack, char op) {
