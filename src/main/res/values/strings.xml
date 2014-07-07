@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AbakPressCalculator</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="editTextPlaceholder">1+2*5-5/22+(45+34)*-3</string>
+    <string name="calculate">Посчитать!</string>
+    <string name="textViewPlaceholer"> = ?</string>
+
+</resources>
