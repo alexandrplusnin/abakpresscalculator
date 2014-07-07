@@ -19,8 +19,7 @@ public class MyActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 String string = ((EditText)findViewById(R.id.editText)).getText().toString();
-                ICalculator calculator = new Calculator();
-                calculator.setInput(string);
+                ICalculator calculator = new Calculator(string);
                 TextView textView = ((TextView)findViewById(R.id.textView));
                 if(calculator.isInputCorrect())
                     textView.setText(" = " + calculator.getResult());

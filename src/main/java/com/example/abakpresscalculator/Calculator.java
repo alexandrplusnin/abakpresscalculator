@@ -6,6 +6,13 @@ public class Calculator implements ICalculator{
 
     public static final String BAD_INPUT = "Некорректные входные данные";
 
+    public Calculator(){
+    }
+
+    public Calculator(String input){
+        this.input = input;
+    }
+
     private String input = "";
     private int result = -1;
     private boolean inputCorrect = false;
